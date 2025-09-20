@@ -1,18 +1,27 @@
 import express from 'express'
 import { logger } from '../utils/logger'
 
+interface AuthRequest extends express.Request {
+  user?: {
+    userId: string
+    lineUserId: string
+    displayName: string
+  }
+}
+
 const router = express.Router()
 
 // 獲取用戶資料
-router.get('/profile', async (req, res) => {
+router.get('/profile', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 這裡應該從資料庫查詢用戶資料
@@ -50,31 +59,34 @@ router.get('/profile', async (req, res) => {
 })
 
 // 更新用戶資料
-router.put('/profile', async (req, res) => {
+router.put('/profile', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
     const { displayName, statusMessage } = req.body
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 驗證輸入
     if (displayName && displayName.length > 50) {
-      return res.status(400).json({
+      res.status(400).json({
         error: '顯示名稱過長',
         message: '顯示名稱不能超過 50 個字符'
       })
+      return
     }
 
     if (statusMessage && statusMessage.length > 100) {
-      return res.status(400).json({
+      res.status(400).json({
         error: '狀態訊息過長',
         message: '狀態訊息不能超過 100 個字符'
       })
+      return
     }
 
     // 這裡應該更新資料庫中的用戶資料
@@ -102,15 +114,16 @@ router.put('/profile', async (req, res) => {
 })
 
 // 獲取用戶統計資訊
-router.get('/stats', async (req, res) => {
+router.get('/stats', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 模擬統計數據
@@ -162,16 +175,17 @@ router.get('/stats', async (req, res) => {
 })
 
 // 獲取用戶的膠囊活動
-router.get('/activity', async (req, res) => {
+router.get('/activity', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
     const { type = 'all', limit = 10 } = req.query
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 模擬活動數據
@@ -235,16 +249,17 @@ router.get('/activity', async (req, res) => {
 })
 
 // 刪除用戶帳號
-router.delete('/account', async (req, res) => {
+router.delete('/account', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
     const { confirmPassword } = req.body
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 這裡應該實作帳號刪除邏輯

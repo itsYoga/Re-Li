@@ -43,3 +43,36 @@
 {"level":"info","message":"🚀 Re:li 後端服務啟動成功","service":"line-remind-backend","timestamp":"2025-09-20 09:42:07"}
 {"level":"info","message":"📍 服務地址: http://localhost:3001","service":"line-remind-backend","timestamp":"2025-09-20 09:42:07"}
 {"level":"info","message":"🌍 環境: development","service":"line-remind-backend","timestamp":"2025-09-20 09:42:07"}
+{"level":"info","message":"收到 SIGTERM 信號，正在關閉伺服器...","service":"line-remind-backend","timestamp":"2025-09-20 10:04:57"}
+{"address":"::1","code":"ECONNREFUSED","errno":-111,"level":"error","message":"資料庫初始化失敗: connect ECONNREFUSED ::1:5432","port":5432,"service":"line-remind-backend","stack":"Error: connect ECONNREFUSED ::1:5432\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","syscall":"connect","timestamp":"2025-09-20 02:05:24"}
+{"code":"ENOENT","errno":-2,"level":"error","message":"資料庫初始化失敗: ENOENT: no such file or directory, scandir '/database/migrations'","path":"/database/migrations","service":"line-remind-backend","stack":"Error: ENOENT: no such file or directory, scandir '/database/migrations'","syscall":"scandir","timestamp":"2025-09-20 02:05:41"}
+{"code":"ENOENT","errno":-2,"level":"error","message":"資料庫初始化失敗: ENOENT: no such file or directory, scandir '/database/migrations'","path":"/database/migrations","service":"line-remind-backend","stack":"Error: ENOENT: no such file or directory, scandir '/database/migrations'","syscall":"scandir","timestamp":"2025-09-20 02:05:46"}
+{"code":"ENOENT","errno":-2,"level":"error","message":"資料庫初始化失敗: ENOENT: no such file or directory, scandir '/database/migrations'","path":"/database/migrations","service":"line-remind-backend","stack":"Error: ENOENT: no such file or directory, scandir '/database/migrations'","syscall":"scandir","timestamp":"2025-09-20 02:05:47"}
+{"code":"ENOENT","errno":-2,"level":"error","message":"資料庫初始化失敗: ENOENT: no such file or directory, scandir '/app/database/migrations'","path":"/app/database/migrations","service":"line-remind-backend","stack":"Error: ENOENT: no such file or directory, scandir '/app/database/migrations'","syscall":"scandir","timestamp":"2025-09-20 02:05:59"}
+{"code":"ENOENT","errno":-2,"level":"error","message":"資料庫初始化失敗: ENOENT: no such file or directory, scandir '/app/database/migrations'","path":"/app/database/migrations","service":"line-remind-backend","stack":"Error: ENOENT: no such file or directory, scandir '/app/database/migrations'","syscall":"scandir","timestamp":"2025-09-20 02:06:02"}
+{"code":"ENOENT","errno":-2,"level":"error","message":"資料庫初始化失敗: ENOENT: no such file or directory, scandir '/app/database/migrations'","path":"/app/database/migrations","service":"line-remind-backend","stack":"Error: ENOENT: no such file or directory, scandir '/app/database/migrations'","syscall":"scandir","timestamp":"2025-09-20 02:06:10"}
+{"level":"info","message":"資料庫遷移完成","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"種子資料載入完成","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"資料庫連接成功","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"排程器已啟動","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"排程器啟動成功","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"🚀 Re:li 後端服務啟動成功","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"📍 服務地址: http://localhost:3001","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"level":"info","message":"🌍 環境: development","service":"line-remind-backend","timestamp":"2025-09-20 02:06:42"}
+{"ip":"::1","level":"info","message":"API 請求開始","method":"GET","service":"line-remind-backend","timestamp":"2025-09-20 02:06:46","url":"/health"}
+{"duration":"6ms","ip":"::1","level":"info","message":"API 請求完成","method":"GET","service":"line-remind-backend","statusCode":200,"timestamp":"2025-09-20 02:06:46","url":"/health"}
+{"ip":"::ffff:192.168.65.1","level":"info","message":"API 請求開始","method":"GET","service":"line-remind-backend","timestamp":"2025-09-20 02:06:57","url":"/health","userAgent":"curl/8.7.1"}
+{"duration":"3ms","ip":"::ffff:192.168.65.1","level":"info","message":"API 請求完成","method":"GET","service":"line-remind-backend","statusCode":200,"timestamp":"2025-09-20 02:06:57","url":"/health","userAgent":"curl/8.7.1"}
+{"level":"info","message":"收到 SIGTERM 信號，正在關閉伺服器...","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"資料庫遷移完成","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"種子資料載入完成","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"資料庫連接成功","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"排程器已啟動","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"排程器啟動成功","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"🚀 Re:li 後端服務啟動成功","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"📍 服務地址: http://localhost:3001","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"level":"info","message":"🌍 環境: development","service":"line-remind-backend","timestamp":"2025-09-20 02:07:10"}
+{"ip":"::1","level":"info","message":"API 請求開始","method":"GET","service":"line-remind-backend","timestamp":"2025-09-20 02:07:16","url":"/health"}
+{"duration":"5ms","ip":"::1","level":"info","message":"API 請求完成","method":"GET","service":"line-remind-backend","statusCode":200,"timestamp":"2025-09-20 02:07:16","url":"/health"}
+{"ip":"::1","level":"info","message":"API 請求開始","method":"GET","service":"line-remind-backend","timestamp":"2025-09-20 02:07:46","url":"/health"}
+{"duration":"4ms","ip":"::1","level":"info","message":"API 請求完成","method":"GET","service":"line-remind-backend","statusCode":200,"timestamp":"2025-09-20 02:07:46","url":"/health"}

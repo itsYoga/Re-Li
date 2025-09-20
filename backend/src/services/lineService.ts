@@ -45,7 +45,7 @@ export async function sendLineNotification(notification: LineNotification) {
 
     // 如果有快速回覆，添加到訊息中
     if (notification.quickReply) {
-      message.messages[0].quickReply = notification.quickReply
+      (message.messages[0] as any).quickReply = notification.quickReply
     }
 
     const response = await axios.post(

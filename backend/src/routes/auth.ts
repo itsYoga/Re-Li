@@ -5,15 +5,16 @@ import { logger } from '../utils/logger'
 const router = express.Router()
 
 // LINE 登入驗證
-router.post('/line-login', async (req, res) => {
+router.post('/line-login', async (req, res): Promise<void> => {
   try {
     const { lineUserId, displayName, pictureUrl, statusMessage } = req.body
 
     if (!lineUserId || !displayName) {
-      return res.status(400).json({
+      res.status(400).json({
         error: '缺少必要參數',
         message: 'LINE User ID 和顯示名稱為必填'
       })
+      return
     }
 
     // 生成 JWT token
@@ -53,14 +54,15 @@ router.post('/line-login', async (req, res) => {
 })
 
 // 驗證 token
-router.get('/verify', async (req, res) => {
+router.get('/verify', async (req, res): Promise<void> => {
   try {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '缺少有效的認證 token'
       })
+      return
     }
 
     const token = authHeader.substring(7)
@@ -85,7 +87,7 @@ router.get('/verify', async (req, res) => {
 })
 
 // 登出
-router.post('/logout', async (req, res) => {
+router.post('/logout', async (req, res): Promise<void> => {
   try {
     // 這裡可以實作 token 黑名單機制
     logger.info('用戶登出')

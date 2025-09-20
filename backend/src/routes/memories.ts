@@ -1,19 +1,28 @@
 import express from 'express'
 import { logger } from '../utils/logger'
 
+interface AuthRequest extends express.Request {
+  user?: {
+    userId: string
+    lineUserId: string
+    displayName: string
+  }
+}
+
 const router = express.Router()
 
 // 獲取用戶的回憶片段
-router.get('/', async (req, res) => {
+router.get('/', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
     const { emotion, tag, startDate, endDate, limit = 20, offset = 0 } = req.query
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 這裡應該從資料庫查詢用戶的回憶片段
@@ -97,15 +106,16 @@ router.get('/', async (req, res) => {
 })
 
 // 獲取回憶統計資訊
-router.get('/stats', async (req, res) => {
+router.get('/stats', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 模擬統計數據
@@ -149,23 +159,25 @@ router.get('/stats', async (req, res) => {
 })
 
 // 搜尋回憶片段
-router.get('/search', async (req, res) => {
+router.get('/search', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
     const { q, emotion, limit = 10 } = req.query
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     if (!q) {
-      return res.status(400).json({
+      res.status(400).json({
         error: '缺少搜尋關鍵字',
         message: '請提供搜尋關鍵字'
       })
+      return
     }
 
     // 模擬搜尋結果
@@ -204,16 +216,17 @@ router.get('/search', async (req, res) => {
 })
 
 // 刪除回憶片段
-router.delete('/:memoryId', async (req, res) => {
+router.delete('/:memoryId', async (req: AuthRequest, res): Promise<void> => {
   try {
-    const userId = (req as any).user?.id
+    const userId = req.user?.userId
     const { memoryId } = req.params
 
     if (!userId) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未授權',
         message: '請先登入'
       })
+      return
     }
 
     // 這裡應該從資料庫刪除回憶片段

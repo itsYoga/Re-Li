@@ -4,6 +4,14 @@ import { db } from '../config/database'
 import { logger } from '../utils/logger'
 import { sendLineNotification } from '../services/lineService'
 
+interface AuthRequest extends express.Request {
+  user?: {
+    userId: string
+    lineUserId: string
+    displayName: string
+  }
+}
+
 const router = express.Router()
 
 // 創建時空膠囊的驗證 schema
@@ -23,14 +31,15 @@ const createCapsuleSchema = Joi.object({
 })
 
 // 創建時空膠囊
-router.post('/', async (req, res) => {
+router.post('/', async (req: AuthRequest, res): Promise<void> => {
   try {
     const { error, value } = createCapsuleSchema.validate(req.body)
     if (error) {
-      return res.status(400).json({
+      res.status(400).json({
         error: '請求資料格式錯誤',
         details: error.details[0].message
       })
+      return
     }
 
     const {
@@ -49,9 +58,10 @@ router.post('/', async (req, res) => {
       .first()
 
     if (!recipient) {
-      return res.status(404).json({
+      res.status(404).json({
         error: '找不到指定的接收者'
       })
+      return
     }
 
     // 創建時空膠囊
@@ -89,7 +99,7 @@ router.post('/', async (req, res) => {
 })
 
 // 獲取使用者的時空膠囊
-router.get('/', async (req, res) => {
+router.get('/', async (req: AuthRequest, res): Promise<void> => {
   try {
     const userId = req.user?.userId
     const { type = 'all' } = req.query
@@ -142,7 +152,7 @@ router.get('/', async (req, res) => {
 })
 
 // 解鎖時空膠囊
-router.post('/:id/unlock', async (req, res) => {
+router.post('/:id/unlock', async (req: AuthRequest, res): Promise<void> => {
   try {
     const { id } = req.params
     const userId = req.user?.userId
@@ -154,16 +164,18 @@ router.post('/:id/unlock', async (req, res) => {
       .first()
 
     if (!capsule) {
-      return res.status(404).json({
+      res.status(404).json({
         error: '找不到指定的時空膠囊'
       })
+      return
     }
 
     // 檢查是否已解鎖
     if (capsule.status === 'unlocked') {
-      return res.status(400).json({
+      res.status(400).json({
         error: '此膠囊已經解鎖'
       })
+      return
     }
 
     // 檢查解鎖時間
@@ -171,10 +183,11 @@ router.post('/:id/unlock', async (req, res) => {
     const unlockTime = new Date(capsule.unlock_time)
 
     if (now < unlockTime) {
-      return res.status(400).json({
+      res.status(400).json({
         error: '膠囊尚未到解鎖時間',
         unlockTime: capsule.unlock_time
       })
+      return
     }
 
     // 更新膠囊狀態
@@ -207,7 +220,7 @@ router.post('/:id/unlock', async (req, res) => {
 })
 
 // 刪除時空膠囊
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req: AuthRequest, res): Promise<void> => {
   try {
     const { id } = req.params
     const userId = req.user?.userId
@@ -219,16 +232,18 @@ router.delete('/:id', async (req, res) => {
       .first()
 
     if (!capsule) {
-      return res.status(404).json({
+      res.status(404).json({
         error: '找不到指定的時空膠囊或無權限刪除'
       })
+      return
     }
 
     // 檢查膠囊狀態
     if (capsule.status === 'unlocked') {
-      return res.status(400).json({
+      res.status(400).json({
         error: '已解鎖的膠囊無法刪除'
       })
+      return
     }
 
     // 刪除膠囊

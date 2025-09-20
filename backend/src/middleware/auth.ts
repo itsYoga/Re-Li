@@ -15,15 +15,16 @@ export const authMiddleware = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '')
 
     if (!token) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '未提供認證令牌',
         message: '請先登入'
       })
+      return
     }
 
     // 驗證 JWT token
@@ -35,10 +36,11 @@ export const authMiddleware = async (
       .first()
 
     if (!user) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '無效的認證令牌',
         message: '使用者不存在'
       })
+      return
     }
 
     // 將使用者資訊添加到請求物件
@@ -53,17 +55,19 @@ export const authMiddleware = async (
     logger.error('認證中介軟體錯誤:', error)
     
     if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '無效的認證令牌',
         message: '請重新登入'
       })
+      return
     }
 
     if (error instanceof jwt.TokenExpiredError) {
-      return res.status(401).json({
+      res.status(401).json({
         error: '認證令牌已過期',
         message: '請重新登入'
       })
+      return
     }
 
     res.status(500).json({
@@ -77,7 +81,7 @@ export const optionalAuth = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '')
 

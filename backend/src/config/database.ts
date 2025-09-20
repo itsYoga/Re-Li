@@ -3,7 +3,7 @@ import { logger } from '../utils/logger'
 
 const config = {
   client: 'postgresql',
-  connection: {
+  connection: process.env.DATABASE_URL || {
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
     database: process.env.DB_NAME || 'reli_db',
@@ -16,11 +16,11 @@ const config = {
     max: 10
   },
   migrations: {
-    directory: '../database/migrations',
+    directory: './database/migrations',
     tableName: 'knex_migrations'
   },
   seeds: {
-    directory: '../database/seeds'
+    directory: './database/seeds'
   }
 }
 
