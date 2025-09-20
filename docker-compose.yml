@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 資料庫
+  postgres:
+    image: postgres:15-alpine
+    container_name: reli-postgres
+    environment:
+      POSTGRES_DB: reli_db
+      POSTGRES_USER: reli_user
+      POSTGRES_PASSWORD: reli_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - reli-network
+
+  # Redis (用於快取和會話管理)
+  redis:
+    image: redis:7-alpine
+    container_name: reli-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - reli-network
+
+  # 後端 API 服務
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: reli-backend
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://reli_user:reli_password@postgres:5432/reli_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-super-secret-jwt-key-here
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - reli-network
+    command: npm run dev
+
+  # 前端應用
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: reli-frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:3001/api
+      VITE_LIFF_ID: your-liff-id
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - reli-network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  reli-network:
+    driver: bridge
